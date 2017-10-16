@@ -24,6 +24,5 @@ func (uuid *UUID) GetUUID() int64 {
 		uuid.Sequence = 0
 	}
 	uuid.LastTimeStamp = t
-	//
 	return t*1000000 + uuid.Sequence*1000 + uuid.WorkId
 }
