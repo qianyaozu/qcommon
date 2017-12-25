@@ -1,8 +1,8 @@
 package qcommon
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 	"time"
 )
 
