@@ -1,20 +1,11 @@
 package qcommon
 
+import (
+	"encoding/json"
+	"fmt"
+)
 
-///mongodb 查询数据实体类
-type PostData struct {
-	Method string//get,count,update,exists,add,delete,func
-	DBName string
-	Table     string
-	Data      interface{}
-	OrderBy   string
-	Limit     int
-	Skip      int
-	Select    map[string]int
-	UpdateAll    bool        //插入时判断是否更新，更新时判断是否批量更新
-	Distinct  string      //是否去重，返回一个[]string
-	Condition interface{} //update的时候查询条件
-}
+
 
 type ResponseModel struct {
 	State   int
@@ -36,4 +27,27 @@ func ResponseJson(js interface{}, e error) ResponseModel {
 		data.Data = js
 	}
 	return data
+}
+
+
+func ResponseData(js interface{},e error) []byte {
+	var data ResponseModel
+	if e != nil {
+		data.State = 0
+		data.Message = e.Error()
+	} else {
+		data.State = 1
+		data.Message = "success"
+	}
+	if js != nil {
+		data.Data = js
+	}
+	d, _ := json.Marshal(data)
+	return d
+}
+
+func Recovery() {
+	if err := recover(); err != nil {
+		fmt.Println(err)
+	}
 }
