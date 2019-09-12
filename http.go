@@ -17,7 +17,6 @@ func ClientIP(r *http.Request) string {
 		if len(clientIP) > 0 {
 			return clientIP
 		}
-
 	}
 	if clientIPs := r.Header["X-Real-Ip"]; len(clientIPs) > 0 {
 		return clientIPs[0]
