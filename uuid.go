@@ -18,11 +18,18 @@ func UUIDDefault(workerId int64) *UUID {
 	return &UUID{LastTimeStamp: 0, Sequence: -1, WorkId: workerId}
 }
 func (uuid *UUID) GetUUID() int64 {
+	for {
+		//如果遇到时钟回拨，则等待时间大于之前的记录值后再进行出号
+		if (time.Now().UnixNano() / 1e6) >= uuid.LastTimeStamp {
+			break
+		}
+		time.Sleep(10)
+	}
 	mu.Lock()
 	defer mu.Unlock()
 	var t = time.Now().UnixNano() / 1e6
 	if t == uuid.LastTimeStamp {
-		uuid.Sequence = (uuid.Sequence + 1)
+		uuid.Sequence += 1
 	} else {
 		uuid.Sequence = 0
 	}

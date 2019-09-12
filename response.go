@@ -1,21 +1,16 @@
 package qcommon
 
-import (
-	"encoding/json"
-	"fmt"
-)
+import "encoding/json"
 
-
-
-type ResponseModel struct {
+type Response struct {
 	State   int
 	Message string
 	Data    interface{}
 }
 
 
-func ResponseJson(js interface{}, e error) ResponseModel {
-	var data ResponseModel
+func ResponseJson(js interface{}, e error) Response {
+	var data Response
 	if e != nil {
 		data.State = 0
 		data.Message = e.Error()
@@ -31,7 +26,7 @@ func ResponseJson(js interface{}, e error) ResponseModel {
 
 
 func ResponseData(js interface{},e error) []byte {
-	var data ResponseModel
+	var data Response
 	if e != nil {
 		data.State = 0
 		data.Message = e.Error()
@@ -44,10 +39,4 @@ func ResponseData(js interface{},e error) []byte {
 	}
 	d, _ := json.Marshal(data)
 	return d
-}
-
-func Recovery() {
-	if err := recover(); err != nil {
-		fmt.Println(err)
-	}
 }
